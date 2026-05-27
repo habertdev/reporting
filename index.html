@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Station Reporting Tool</title>
+<title>Professional Station Reporting Tool</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -11,12 +11,18 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Segoe UI,sans-serif;
+    font-family:'Segoe UI',sans-serif;
 }
 
 body{
-    background:linear-gradient(135deg,#0f172a,#2563eb);
-    padding:10px;
+    min-height:100vh;
+    background:
+        linear-gradient(rgba(10,20,50,0.75),rgba(20,40,90,0.75)),
+        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    padding:15px;
 }
 
 .container{
@@ -27,31 +33,43 @@ body{
 .header{
     text-align:center;
     color:white;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
 .header h1{
-    font-size:24px;
+    font-size:30px;
+    font-weight:700;
+    text-shadow:2px 2px 8px rgba(0,0,0,0.4);
+}
+
+.header p{
+    font-size:15px;
+    opacity:0.9;
 }
 
 .card{
-    background:white;
-    border-radius:15px;
-    padding:18px;
-    margin-bottom:20px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:25px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.2);
+    color:white;
 }
 
 h2{
-    font-size:18px;
-    margin-bottom:12px;
+    margin-bottom:15px;
+    font-size:20px;
+    border-left:5px solid #60a5fa;
+    padding-left:10px;
 }
 
 .grid{
     display:grid;
-    grid-template-columns:1.8fr 1fr 1fr 1fr;
-    gap:8px;
-    margin-bottom:10px;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:10px;
+    margin-bottom:12px;
     align-items:center;
 }
 
@@ -62,10 +80,16 @@ label{
 
 input{
     width:100%;
-    padding:8px;
+    padding:10px;
+    border:none;
+    border-radius:8px;
     font-size:13px;
-    border:1px solid #cbd5e1;
-    border-radius:6px;
+    background:rgba(255,255,255,0.9);
+    color:#1e293b;
+}
+
+input::placeholder{
+    color:#64748b;
 }
 
 .total-box{
@@ -74,13 +98,18 @@ input{
 }
 
 button{
-    padding:9px 14px;
+    padding:10px 16px;
     border:none;
-    border-radius:8px;
+    border-radius:10px;
     cursor:pointer;
     color:white;
-    margin:4px;
+    margin:5px;
     font-size:13px;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
 }
 
 .save{background:#2563eb;}
@@ -90,9 +119,10 @@ button{
 
 .report-card{
     background:white;
-    border-left:5px solid #2563eb;
-    padding:15px;
-    border-radius:12px;
+    color:#1e293b;
+    border-left:6px solid #2563eb;
+    border-radius:15px;
+    padding:18px;
     margin-bottom:20px;
 }
 
@@ -103,14 +133,14 @@ button{
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:12px;
+    margin-top:15px;
     min-width:500px;
 }
 
 th{
-    background:#1d4ed8;
+    background:#2563eb;
     color:white;
-    padding:8px;
+    padding:10px;
     font-size:13px;
 }
 
@@ -135,56 +165,31 @@ td{
 }
 
 canvas{
-    max-height:280px;
-}
-
-@media(max-width:992px){
-    .grid{
-        grid-template-columns:1.5fr 1fr 1fr 1fr;
-    }
-
-    input{
-        padding:7px;
-    }
+    max-height:300px;
 }
 
 @media(max-width:768px){
     .grid{
         grid-template-columns:1fr;
-        gap:6px;
-    }
-
-    .header h1{
-        font-size:20px;
     }
 
     button{
         width:100%;
-        margin-top:8px;
     }
 
-    table{
-        min-width:100%;
+    .header h1{
+        font-size:22px;
     }
 }
 
 @media(max-width:480px){
-    .card{
-        padding:12px;
-    }
-
     input{
+        padding:8px;
         font-size:12px;
-        padding:6px;
     }
 
     th,td{
         font-size:11px;
-        padding:6px;
-    }
-
-    h2{
-        font-size:16px;
     }
 }
 </style>
@@ -195,6 +200,7 @@ canvas{
 
 <div class="header">
     <h1>Daily Station Reporting Tool</h1>
+    <p>Professional Station Performance Management System</p>
 </div>
 
 <div class="card">
@@ -203,182 +209,173 @@ canvas{
 
 <div class="grid">
     <label>Station</label>
-    <input type="text" id="station">
+    <input type="text" id="station" placeholder="Enter station name">
 </div>
 
 <div class="grid">
     <label>Officer</label>
-    <input type="text" id="officer">
+    <input type="text" id="officer" placeholder="Enter reporting officer">
 </div>
 
-<h2>Data Entry</h2>
+<h2>Daily Entry Form</h2>
 
-<div class="grid"><label>New Adult Registration</label><input type="number" id="adultMale" oninput="calculate()"><input type="number" id="adultFemale" oninput="calculate()"><input id="adultTotal" class="total-box" readonly></div>
+<div class="grid"><label>New Adult Registration</label><input type="number" id="adultMale" placeholder="Male" oninput="calculate()"><input type="number" id="adultFemale" placeholder="Female" oninput="calculate()"><input id="adultTotal" class="total-box" placeholder="Total" readonly></div>
 
-<div class="grid"><label>Child Registration</label><input type="number" id="childMale" oninput="calculate()"><input type="number" id="childFemale" oninput="calculate()"><input id="childTotal" class="total-box" readonly></div>
+<div class="grid"><label>Child Registration</label><input type="number" id="childMale" placeholder="Male" oninput="calculate()"><input type="number" id="childFemale" placeholder="Female" oninput="calculate()"><input id="childTotal" class="total-box" placeholder="Total" readonly></div>
 
-<div class="grid"><label>Birth Registration</label><input type="number" id="birthMale" oninput="calculate()"><input type="number" id="birthFemale" oninput="calculate()"><input id="birthTotal" class="total-box" readonly></div>
+<div class="grid"><label>Birth Registration</label><input type="number" id="birthMale" placeholder="Male" oninput="calculate()"><input type="number" id="birthFemale" placeholder="Female" oninput="calculate()"><input id="birthTotal" class="total-box" placeholder="Total" readonly></div>
 
-<div class="grid"><label>Death Registration</label><input type="number" id="deathMale" oninput="calculate()"><input type="number" id="deathFemale" oninput="calculate()"><input id="deathTotal" class="total-box" readonly></div>
+<div class="grid"><label>Death Registration</label><input type="number" id="deathMale" placeholder="Male" oninput="calculate()"><input type="number" id="deathFemale" placeholder="Female" oninput="calculate()"><input id="deathTotal" class="total-box" placeholder="Total" readonly></div>
 
-<div class="grid"><label>Renewal</label><input type="number" id="renewMale" oninput="calculate()"><input type="number" id="renewFemale" oninput="calculate()"><input id="renewTotal" class="total-box" readonly></div>
+<div class="grid"><label>Renewal</label><input type="number" id="renewMale" placeholder="Male" oninput="calculate()"><input type="number" id="renewFemale" placeholder="Female" oninput="calculate()"><input id="renewTotal" class="total-box" placeholder="Total" readonly></div>
 
-<div class="grid"><label>Update</label><input type="number" id="updateMale" oninput="calculate()"><input type="number" id="updateFemale" oninput="calculate()"><input id="updateTotal" class="total-box" readonly></div>
+<div class="grid"><label>Update</label><input type="number" id="updateMale" placeholder="Male" oninput="calculate()"><input type="number" id="updateFemale" placeholder="Female" oninput="calculate()"><input id="updateTotal" class="total-box" placeholder="Total" readonly></div>
 
-<div class="grid"><label>Cards Issued</label><input type="number" id="issuedMale" oninput="calculate()"><input type="number" id="issuedFemale" oninput="calculate()"><input id="issuedTotal" class="total-box" readonly></div>
+<div class="grid"><label>Cards Issued</label><input type="number" id="issuedMale" placeholder="Male" oninput="calculate()"><input type="number" id="issuedFemale" placeholder="Female" oninput="calculate()"><input id="issuedTotal" class="total-box" placeholder="Total" readonly></div>
 
 <div style="text-align:center;">
-    <button class="save" onclick="saveReport()">Save Report</button>
-    <button class="new" onclick="newReport()">New Report</button>
-    <button class="clear" onclick="clearReports()">Clear Reports</button>
+<button class="save" onclick="saveReport()">Save Report</button>
+<button class="new" onclick="newReport()">New Report</button>
+<button class="clear" onclick="clearReports()">Clear Reports</button>
 </div>
 
 </div>
 
 <div class="card">
-    <h2>Generated Reports</h2>
-    <div id="reportsContainer"></div>
+<h2>Generated Reports</h2>
+<div id="reportsContainer"></div>
 </div>
 
 </div>
 
 <script>
 function getValue(id){
-    return parseInt(document.getElementById(id).value)||0;
+return parseInt(document.getElementById(id).value)||0;
 }
 
 function calculate(){
-    const pairs=[
-        ['adultMale','adultFemale','adultTotal'],
-        ['childMale','childFemale','childTotal'],
-        ['birthMale','birthFemale','birthTotal'],
-        ['deathMale','deathFemale','deathTotal'],
-        ['renewMale','renewFemale','renewTotal'],
-        ['updateMale','updateFemale','updateTotal'],
-        ['issuedMale','issuedFemale','issuedTotal']
-    ];
+const pairs=[
+['adultMale','adultFemale','adultTotal'],
+['childMale','childFemale','childTotal'],
+['birthMale','birthFemale','birthTotal'],
+['deathMale','deathFemale','deathTotal'],
+['renewMale','renewFemale','renewTotal'],
+['updateMale','updateFemale','updateTotal'],
+['issuedMale','issuedFemale','issuedTotal']
+];
 
-    pairs.forEach(p=>{
-        document.getElementById(p[2]).value=getValue(p[0])+getValue(p[1]);
-    });
+pairs.forEach(p=>{
+document.getElementById(p[2]).value=getValue(p[0])+getValue(p[1]);
+});
 }
 
 function saveReport(){
-    const reports=JSON.parse(localStorage.getItem('reports'))||[];
+const reports=JSON.parse(localStorage.getItem('reports'))||[];
 
-    reports.push({
-        station:station.value,
-        officer:officer.value,
-        date:new Date().toLocaleString(),
-        categories:[
-            ["New Adult",getValue('adultMale'),getValue('adultFemale')],
-            ["Child",getValue('childMale'),getValue('childFemale')],
-            ["Birth",getValue('birthMale'),getValue('birthFemale')],
-            ["Death",getValue('deathMale'),getValue('deathFemale')],
-            ["Renewal",getValue('renewMale'),getValue('renewFemale')],
-            ["Update",getValue('updateMale'),getValue('updateFemale')],
-            ["Issued",getValue('issuedMale'),getValue('issuedFemale')]
-        ]
-    });
+reports.push({
+station:station.value,
+officer:officer.value,
+date:new Date().toLocaleString(),
+categories:[
+["New Adult",getValue('adultMale'),getValue('adultFemale')],
+["Child",getValue('childMale'),getValue('childFemale')],
+["Birth",getValue('birthMale'),getValue('birthFemale')],
+["Death",getValue('deathMale'),getValue('deathFemale')],
+["Renewal",getValue('renewMale'),getValue('renewFemale')],
+["Update",getValue('updateMale'),getValue('updateFemale')],
+["Issued",getValue('issuedMale'),getValue('issuedFemale')]
+]
+});
 
-    localStorage.setItem('reports',JSON.stringify(reports));
-    displayReports();
+localStorage.setItem('reports',JSON.stringify(reports));
+displayReports();
 }
 
 function displayReports(){
-    const reports=JSON.parse(localStorage.getItem('reports'))||[];
-    const container=document.getElementById('reportsContainer');
-    container.innerHTML='';
+const reports=JSON.parse(localStorage.getItem('reports'))||[];
+const container=document.getElementById('reportsContainer');
+container.innerHTML='';
 
-    reports.slice().reverse().forEach((report,index)=>{
-        let rows='';
-        let grand=0;
+reports.slice().reverse().forEach((report,index)=>{
+let rows='';
+let grand=0;
 
-        report.categories.forEach(cat=>{
-            let total=cat[1]+cat[2];
-            grand+=total;
+report.categories.forEach(cat=>{
+let total=cat[1]+cat[2];
+grand+=total;
 
-            rows+=`
-            <tr>
-                <td>${cat[0]}</td>
-                <td>${cat[1]}</td>
-                <td>${cat[2]}</td>
-                <td>${total}</td>
-            </tr>`;
-        });
+rows+=`
+<tr>
+<td>${cat[0]}</td>
+<td>${cat[1]}</td>
+<td>${cat[2]}</td>
+<td>${total}</td>
+</tr>`;
+});
 
-        container.innerHTML+=`
-        <div class="report-card">
-            <h3>${report.station}</h3>
-            <p><strong>Officer:</strong> ${report.officer}</p>
-            <p><strong>Date:</strong> ${report.date}</p>
+container.innerHTML+=`
+<div class="report-card">
+<h3>${report.station}</h3>
+<p><strong>Officer:</strong> ${report.officer}</p>
+<p><strong>Date:</strong> ${report.date}</p>
 
-            <div class="table-wrapper">
-            <table>
-                <tr>
-                    <th>Category</th>
-                    <th>Male</th>
-                    <th>Female</th>
-                    <th>Total</th>
-                </tr>
-                ${rows}
-                <tr class="grand">
-                    <td colspan="3">Grand Total</td>
-                    <td>${grand}</td>
-                </tr>
-            </table>
-            </div>
+<div class="table-wrapper">
+<table>
+<tr>
+<th>Category</th>
+<th>Male</th>
+<th>Female</th>
+<th>Total</th>
+</tr>
+${rows}
+<tr class="grand">
+<td colspan="3">Grand Total</td>
+<td>${grand}</td>
+</tr>
+</table>
+</div>
 
-            <button class="graph-btn" onclick="toggleGraph(${index})">View Graph</button>
+<button class="graph-btn" onclick="toggleGraph(${index})">View Graph</button>
 
-            <div class="chart-box" id="chartBox${index}">
-                <canvas id="chart${index}"></canvas>
-            </div>
-        </div>`;
-    });
+<div class="chart-box" id="chartBox${index}">
+<canvas id="chart${index}"></canvas>
+</div>
+</div>`;
+});
 }
 
 function toggleGraph(index){
-    const box=document.getElementById(`chartBox${index}`);
-    box.style.display=box.style.display==="block"?"none":"block";
-    if(box.style.display==="block") drawSingleGraph(index);
+const box=document.getElementById(`chartBox${index}`);
+box.style.display=box.style.display==="block"?"none":"block";
+if(box.style.display==="block") drawSingleGraph(index);
 }
 
 function drawSingleGraph(index){
-    const reports=JSON.parse(localStorage.getItem('reports'))||[];
-    const report=reports.reverse()[index];
+const reports=JSON.parse(localStorage.getItem('reports'))||[];
+const report=reports.reverse()[index];
+const ctx=document.getElementById(`chart${index}`).getContext('2d');
 
-    const ctx=document.getElementById(`chart${index}`).getContext('2d');
-
-    new Chart(ctx,{
-        type:'bar',
-        data:{
-            labels:report.categories.map(c=>c[0]),
-            datasets:[{
-                data:report.categories.map(c=>c[1]+c[2]),
-                backgroundColor:['#2563eb','#16a34a','#f59e0b','#dc2626','#9333ea','#06b6d4','#84cc16']
-            }]
-        },
-        options:{
-            responsive:true,
-            maintainAspectRatio:false,
-            plugins:{
-                legend:{display:false},
-                title:{display:true,text:'Category Performance'}
-            }
-        }
-    });
+new Chart(ctx,{
+type:'bar',
+data:{
+labels:report.categories.map(c=>c[0]),
+datasets:[{
+data:report.categories.map(c=>c[1]+c[2]),
+backgroundColor:['#2563eb','#16a34a','#f59e0b','#dc2626','#9333ea','#06b6d4','#84cc16']
+}]
+}
+});
 }
 
 function newReport(){
-    document.querySelectorAll('input').forEach(i=>i.value='');
+document.querySelectorAll('input').forEach(i=>i.value='');
 }
 
 function clearReports(){
-    if(confirm("Delete all reports?")){
-        localStorage.removeItem('reports');
-        displayReports();
-    }
+if(confirm("Delete all reports?")){
+localStorage.removeItem('reports');
+displayReports();
+}
 }
 
 window.onload=displayReports;
