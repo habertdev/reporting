@@ -15,11 +15,13 @@
 }
 
 body{
-    background:linear-gradient(135deg,#db4a82,#c9506e);
-    padding:20px;
+    background:linear-gradient(135deg,#f05691,#e66565,#ee2b86);
+    min-height:100vh;
+    padding:12px;
 }
 
 .container{
+    width:100%;
     max-width:1400px;
     margin:auto;
 }
@@ -27,30 +29,40 @@ body{
 .header{
     text-align:center;
     color:white;
-    margin-bottom:30px;
+    margin-bottom:20px;
+}
+
+.header h1{
+    font-size:clamp(1.3rem,3vw,2.2rem);
 }
 
 .card{
     background:white;
     border-radius:18px;
-    padding:25px;
-    margin-bottom:25px;
+    padding:clamp(12px,2vw,25px);
+    margin-bottom:20px;
     box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
 .grid{
     display:grid;
-    grid-template-columns:2fr 1fr 1fr 1fr;
-    gap:12px;
-    margin-bottom:15px;
+    grid-template-columns:minmax(120px,1.5fr) repeat(3,minmax(70px,1fr));
+    gap:clamp(6px,1vw,12px);
+    margin-bottom:12px;
     align-items:center;
+}
+
+label{
+    font-size:clamp(12px,1.5vw,16px);
+    font-weight:600;
 }
 
 input{
     width:100%;
-    padding:12px;
+    padding:clamp(8px,1vw,12px);
     border:1px solid #cbd5e1;
     border-radius:8px;
+    font-size:clamp(12px,1.5vw,15px);
 }
 
 .total-box{
@@ -59,12 +71,13 @@ input{
 }
 
 button{
-    padding:12px 18px;
+    padding:clamp(8px,1vw,12px) clamp(12px,2vw,18px);
     border:none;
     border-radius:10px;
     cursor:pointer;
     color:white;
     margin:5px;
+    font-size:clamp(12px,1.5vw,15px);
 }
 
 .save{background:#2563eb;}
@@ -75,27 +88,36 @@ button{
 .report-card{
     background:white;
     border-left:6px solid #2563eb;
-    padding:20px;
+    padding:clamp(12px,2vw,20px);
     border-radius:15px;
-    margin-bottom:25px;
+    margin-bottom:20px;
+}
+
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
     margin-top:15px;
+    table-layout:auto;
 }
 
 th{
     background:#1d4ed8;
     color:white;
-    padding:12px;
+    padding:clamp(6px,1vw,12px);
+    font-size:clamp(11px,1.5vw,14px);
 }
 
 td{
-    padding:12px;
+    padding:clamp(6px,1vw,12px);
     border:1px solid #e2e8f0;
     text-align:center;
+    font-size:clamp(11px,1.5vw,14px);
+    word-wrap:break-word;
 }
 
 .grand{
@@ -107,13 +129,43 @@ td{
     display:none;
     margin-top:20px;
     background:#f8fafc;
-    padding:20px;
+    padding:15px;
     border-radius:15px;
+}
+
+@media(max-width:992px){
+    .grid{
+        grid-template-columns:1.5fr repeat(3,1fr);
+    }
 }
 
 @media(max-width:768px){
     .grid{
         grid-template-columns:1fr;
+    }
+
+    button{
+        width:100%;
+        margin:6px 0;
+    }
+
+    table{
+        min-width:100%;
+    }
+}
+
+@media(max-width:480px){
+    .card,
+    .report-card{
+        padding:10px;
+    }
+
+    input{
+        padding:8px;
+    }
+
+    th,td{
+        padding:6px;
     }
 }
 </style>
