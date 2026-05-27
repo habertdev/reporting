@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Station Reporting Tool</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#2563eb);
+    padding:20px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+.header{
+    text-align:center;
+    color:white;
+    margin-bottom:30px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:12px;
+    margin-bottom:15px;
+    align-items:center;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+}
+
+.total-box{
+    background:#dbeafe;
+    font-weight:bold;
+}
+
+button{
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    color:white;
+    margin:5px;
+}
+
+.save{background:#2563eb;}
+.new{background:#16a34a;}
+.clear{background:#dc2626;}
+.graph-btn{background:#9333ea;}
+
+.report-card{
+    background:white;
+    border-left:6px solid #2563eb;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:25px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+th{
+    background:#1d4ed8;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    border:1px solid #e2e8f0;
+    text-align:center;
+}
+
+.grand{
+    background:#dcfce7;
+    font-weight:bold;
+}
+
+.chart-box{
+    display:none;
+    margin-top:20px;
+    background:#f8fafc;
+    padding:20px;
+    border-radius:15px;
+}
+
+@media(max-width:768px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+    <h1>Daily Station Reporting Tool</h1>
+</div>
+
+<div class="card">
+
+<h2>Station Information</h2>
+
+<div class="grid">
+    <label>Station</label>
+    <input type="text" id="station">
+</div>
+
+<div class="grid">
+    <label>Officer</label>
+    <input type="text" id="officer">
+</div>
+
+<h2>Data Entry</h2>
+
+<div class="grid">
+    <label>New Adult Registration</label>
+    <input type="number" id="adultMale" oninput="calculate()">
+    <input type="number" id="adultFemale" oninput="calculate()">
+    <input id="adultTotal" class="total-box" readonly>
+</div>
+
+<div class="grid">
+    <label>Child Registration</label>
+    <input type="number" id="childMale" oninput="calculate()">
+    <input type="number" id="childFemale" oninput="calculate()">
+    <input id="childTotal" class="total-box" readonly>
+</div>
+
+<div class="grid">
+    <label>Birth Registration</label>
+    <input type="number" id="birthMale" oninput="calculate()">
+    <input type="number" id="birthFemale" oninput="calculate()">
+    <input id="birthTotal" class="total-box" readonly>
+</div>
+
+<div class="grid">
+    <label>Death Registration</label>
+    <input type="number" id="deathMale" oninput="calculate()">
+    <input type="number" id="deathFemale" oninput="calculate()">
+    <input id="deathTotal" class="total-box" readonly>
+</div>
+
+<div class="grid">
+    <label>Renewal</label>
+    <input type="number" id="renewMale" oninput="calculate()">
+    <input type="number" id="renewFemale" oninput="calculate()">
+    <input id="renewTotal" class="total-box" readonly>
+</div>
+
+<div class="grid">
+    <label>Update</label>
+    <input type="number" id="updateMale" oninput="calculate()">
+    <input type="number" id="updateFemale" oninput="calculate()">
+    <input id="updateTotal" class="total-box" readonly>
+</div>
+
+<div class="grid">
+    <label>Cards Issued</label>
+    <input type="number" id="issuedMale" oninput="calculate()">
+    <input type="number" id="issuedFemale" oninput="calculate()">
+    <input id="issuedTotal" class="total-box" readonly>
+</div>
+
+<div style="text-align:center;">
+    <button class="save" onclick="saveReport()">Save Report</button>
+    <button class="new" onclick="newReport()">New Report</button>
+    <button class="clear" onclick="clearReports()">Clear Reports</button>
+</div>
+
+</div>
+
+<div class="card">
+    <h2>Generated Reports</h2>
+    <div id="reportsContainer"></div>
+</div>
+
+</div>
+
+<script>
+function getValue(id){
+    return parseInt(document.getElementById(id).value)||0;
+}
+
+function calculate(){
+    const pairs=[
+        ['adultMale','adultFemale','adultTotal'],
+        ['childMale','childFemale','childTotal'],
+        ['birthMale','birthFemale','birthTotal'],
+        ['deathMale','deathFemale','deathTotal'],
+        ['renewMale','renewFemale','renewTotal'],
+        ['updateMale','updateFemale','updateTotal'],
+        ['issuedMale','issuedFemale','issuedTotal']
+    ];
+
+    pairs.forEach(p=>{
+        document.getElementById(p[2]).value=getValue(p[0])+getValue(p[1]);
+    });
+}
+
+function saveReport(){
+    const reports=JSON.parse(localStorage.getItem('reports'))||[];
+
+    reports.push({
+        station:station.value,
+        officer:officer.value,
+        date:new Date().toLocaleString(),
+        categories:[
+            ["New Adult",getValue('adultMale'),getValue('adultFemale')],
+            ["Child",getValue('childMale'),getValue('childFemale')],
+            ["Birth",getValue('birthMale'),getValue('birthFemale')],
+            ["Death",getValue('deathMale'),getValue('deathFemale')],
+            ["Renewal",getValue('renewMale'),getValue('renewFemale')],
+            ["Update",getValue('updateMale'),getValue('updateFemale')],
+            ["Issued",getValue('issuedMale'),getValue('issuedFemale')]
+        ]
+    });
+
+    localStorage.setItem('reports',JSON.stringify(reports));
+    displayReports();
+}
+
+function displayReports(){
+    const reports=JSON.parse(localStorage.getItem('reports'))||[];
+    const container=document.getElementById('reportsContainer');
+    container.innerHTML='';
+
+    reports.slice().reverse().forEach((report,index)=>{
+        let rows='';
+        let grand=0;
+
+        report.categories.forEach(cat=>{
+            let total=cat[1]+cat[2];
+            grand+=total;
+
+            rows+=`
+            <tr>
+                <td>${cat[0]}</td>
+                <td>${cat[1]}</td>
+                <td>${cat[2]}</td>
+                <td>${total}</td>
+            </tr>`;
+        });
+
+        container.innerHTML+=`
+        <div class="report-card">
+            <h3>${report.station}</h3>
+            <p><strong>Officer:</strong> ${report.officer}</p>
+            <p><strong>Date:</strong> ${report.date}</p>
+
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Male</th>
+                    <th>Female</th>
+                    <th>Total</th>
+                </tr>
+                ${rows}
+                <tr class="grand">
+                    <td colspan="3">Grand Total</td>
+                    <td>${grand}</td>
+                </tr>
+            </table>
+
+            <button class="graph-btn" onclick="toggleGraph(${index})">
+                View Graph
+            </button>
+
+            <div class="chart-box" id="chartBox${index}">
+                <canvas id="chart${index}"></canvas>
+            </div>
+        </div>`;
+    });
+}
+
+function toggleGraph(index){
+    const box=document.getElementById(`chartBox${index}`);
+
+    if(box.style.display==="block"){
+        box.style.display="none";
+        return;
+    }
+
+    box.style.display="block";
+    drawSingleGraph(index);
+}
+
+function drawSingleGraph(index){
+    const reports=JSON.parse(localStorage.getItem('reports'))||[];
+    const report=reports.reverse()[index];
+
+    const ctx=document.getElementById(`chart${index}`).getContext('2d');
+
+    new Chart(ctx,{
+        type:'bar',
+        data:{
+            labels:report.categories.map(c=>c[0]),
+            datasets:[{
+                data:report.categories.map(c=>c[1]+c[2]),
+                backgroundColor:[
+                    '#2563eb',
+                    '#16a34a',
+                    '#f59e0b',
+                    '#dc2626',
+                    '#9333ea',
+                    '#06b6d4',
+                    '#84cc16'
+                ]
+            }]
+        },
+        options:{
+            plugins:{
+                legend:{display:false},
+                title:{
+                    display:true,
+                    text:'Category Performance'
+                }
+            }
+        }
+    });
+}
+
+function newReport(){
+    document.querySelectorAll('input').forEach(i=>i.value='');
+}
+
+function clearReports(){
+    if(confirm("Delete all reports?")){
+        localStorage.removeItem('reports');
+        displayReports();
+    }
+}
+
+window.onload=displayReports;
+</script>
+
+</body>
+</html>
