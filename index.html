@@ -15,7 +15,7 @@
 }
 
 body{
-    background:linear-gradient(135deg,#f05691,#e66565,#ee2b86);
+    background:linear-gradient(135deg,#f86596,#f038a3,#e73a99);
     min-height:100vh;
     padding:12px;
 }
@@ -33,7 +33,7 @@ body{
 }
 
 .header h1{
-    font-size:clamp(1.3rem,3vw,2.2rem);
+    font-size:clamp(1.4rem,3vw,2.5rem);
 }
 
 .card{
@@ -46,23 +46,23 @@ body{
 
 .grid{
     display:grid;
-    grid-template-columns:minmax(120px,1.5fr) repeat(3,minmax(70px,1fr));
-    gap:clamp(6px,1vw,12px);
+    grid-template-columns:minmax(150px,2fr) repeat(3,minmax(70px,1fr));
+    gap:10px;
     margin-bottom:12px;
     align-items:center;
 }
 
 label{
-    font-size:clamp(12px,1.5vw,16px);
     font-weight:600;
+    font-size:clamp(12px,1.5vw,15px);
 }
 
 input{
     width:100%;
-    padding:clamp(8px,1vw,12px);
+    padding:10px;
     border:1px solid #cbd5e1;
     border-radius:8px;
-    font-size:clamp(12px,1.5vw,15px);
+    font-size:14px;
 }
 
 .total-box{
@@ -70,14 +70,28 @@ input{
     font-weight:bold;
 }
 
+.button-group{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin-top:20px;
+}
+
 button{
-    padding:clamp(8px,1vw,12px) clamp(12px,2vw,18px);
+    padding:12px 18px;
     border:none;
     border-radius:10px;
     cursor:pointer;
     color:white;
-    margin:5px;
-    font-size:clamp(12px,1.5vw,15px);
+    font-size:14px;
+    min-width:140px;
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    opacity:.9;
 }
 
 .save{background:#2563eb;}
@@ -88,7 +102,7 @@ button{
 .report-card{
     background:white;
     border-left:6px solid #2563eb;
-    padding:clamp(12px,2vw,20px);
+    padding:18px;
     border-radius:15px;
     margin-bottom:20px;
 }
@@ -102,22 +116,20 @@ table{
     width:100%;
     border-collapse:collapse;
     margin-top:15px;
-    table-layout:auto;
 }
 
 th{
     background:#1d4ed8;
     color:white;
-    padding:clamp(6px,1vw,12px);
-    font-size:clamp(11px,1.5vw,14px);
+    padding:10px;
+    font-size:14px;
 }
 
 td{
-    padding:clamp(6px,1vw,12px);
+    padding:10px;
     border:1px solid #e2e8f0;
     text-align:center;
-    font-size:clamp(11px,1.5vw,14px);
-    word-wrap:break-word;
+    font-size:14px;
 }
 
 .grand{
@@ -129,14 +141,8 @@ td{
     display:none;
     margin-top:20px;
     background:#f8fafc;
-    padding:15px;
+    padding:20px;
     border-radius:15px;
-}
-
-@media(max-width:992px){
-    .grid{
-        grid-template-columns:1.5fr repeat(3,1fr);
-    }
 }
 
 @media(max-width:768px){
@@ -144,28 +150,27 @@ td{
         grid-template-columns:1fr;
     }
 
-    button{
-        width:100%;
-        margin:6px 0;
+    .button-group{
+        flex-direction:column;
     }
 
-    table{
-        min-width:100%;
+    button{
+        width:100%;
+    }
+
+    th,td{
+        font-size:12px;
+        padding:8px;
     }
 }
 
 @media(max-width:480px){
-    .card,
-    .report-card{
+    .card,.report-card{
         padding:10px;
     }
 
     input{
         padding:8px;
-    }
-
-    th,td{
-        padding:6px;
     }
 }
 </style>
@@ -184,30 +189,70 @@ td{
 
 <div class="grid">
     <label>Station</label>
-    <input type="text" id="station">
+    <input type="text" id="station" placeholder="Enter station name">
 </div>
 
 <div class="grid">
     <label>Officer</label>
-    <input type="text" id="officer">
+    <input type="text" id="officer" placeholder="Enter officer name">
 </div>
 
+<h2>Data Entry</h2>
 
-<h2>Daily Entry Form</h2>
+<div class="grid">
+    <label>New Adult Registration</label>
+    <input type="number" id="adultMale" placeholder="Male" oninput="calculate()">
+    <input type="number" id="adultFemale" placeholder="Female" oninput="calculate()">
+    <input id="adultTotal" class="total-box" readonly>
+</div>
 
-<div class="grid"><label>New Adult Registration</label><input type="number" id="adultMale" placeholder="Male" oninput="calculate()"><input type="number" id="adultFemale" placeholder="Female" oninput="calculate()"><input id="adultTotal" class="total-box" placeholder="Total" readonly></div>
+<div class="grid">
+    <label>Child Registration</label>
+    <input type="number" id="childMale" placeholder="Male" oninput="calculate()">
+    <input type="number" id="childFemale" placeholder="Female" oninput="calculate()">
+    <input id="childTotal" class="total-box" readonly>
+</div>
 
-<div class="grid"><label>Child Registration</label><input type="number" id="childMale" placeholder="Male" oninput="calculate()"><input type="number" id="childFemale" placeholder="Female" oninput="calculate()"><input id="childTotal" class="total-box" placeholder="Total" readonly></div>
+<div class="grid">
+    <label>Birth Registration</label>
+    <input type="number" id="birthMale" placeholder="Male" oninput="calculate()">
+    <input type="number" id="birthFemale" placeholder="Female" oninput="calculate()">
+    <input id="birthTotal" class="total-box" readonly>
+</div>
 
-<div class="grid"><label>Birth Registration</label><input type="number" id="birthMale" placeholder="Male" oninput="calculate()"><input type="number" id="birthFemale" placeholder="Female" oninput="calculate()"><input id="birthTotal" class="total-box" placeholder="Total" readonly></div>
+<div class="grid">
+    <label>Death Registration</label>
+    <input type="number" id="deathMale" placeholder="Male" oninput="calculate()">
+    <input type="number" id="deathFemale" placeholder="Female" oninput="calculate()">
+    <input id="deathTotal" class="total-box" readonly>
+</div>
 
-<div class="grid"><label>Death Registration</label><input type="number" id="deathMale" placeholder="Male" oninput="calculate()"><input type="number" id="deathFemale" placeholder="Female" oninput="calculate()"><input id="deathTotal" class="total-box" placeholder="Total" readonly></div>
+<div class="grid">
+    <label>Renewal</label>
+    <input type="number" id="renewMale" placeholder="Male" oninput="calculate()">
+    <input type="number" id="renewFemale" placeholder="Female" oninput="calculate()">
+    <input id="renewTotal" class="total-box" readonly>
+</div>
 
-<div class="grid"><label>Renewal</label><input type="number" id="renewMale" placeholder="Male" oninput="calculate()"><input type="number" id="renewFemale" placeholder="Female" oninput="calculate()"><input id="renewTotal" class="total-box" placeholder="Total" readonly></div>
+<div class="grid">
+    <label>Update</label>
+    <input type="number" id="updateMale" placeholder="Male" oninput="calculate()">
+    <input type="number" id="updateFemale" placeholder="Female" oninput="calculate()">
+    <input id="updateTotal" class="total-box" readonly>
+</div>
 
-<div class="grid"><label>Update</label><input type="number" id="updateMale" placeholder="Male" oninput="calculate()"><input type="number" id="updateFemale" placeholder="Female" oninput="calculate()"><input id="updateTotal" class="total-box" placeholder="Total" readonly></div>
+<div class="grid">
+    <label>Cards Issued</label>
+    <input type="number" id="issuedMale" placeholder="Male" oninput="calculate()">
+    <input type="number" id="issuedFemale" placeholder="Female" oninput="calculate()">
+    <input id="issuedTotal" class="total-box" readonly>
+</div>
 
-<div class="grid"><label>Cards Issued</label><input type="number" id="issuedMale" placeholder="Male" oninput="calculate()"><input type="number" id="issuedFemale" placeholder="Female" oninput="calculate()"><input id="issuedTotal" class="total-box" placeholder="Total" readonly></div>
+<div class="button-group">
+    <button class="save" onclick="saveReport()">Save Report</button>
+    <button class="new" onclick="newReport()">New Report</button>
+    <button class="clear" onclick="clearReports()">Clear Reports</button>
+</div>
 
 </div>
 
@@ -289,23 +334,23 @@ function displayReports(){
             <p><strong>Officer:</strong> ${report.officer}</p>
             <p><strong>Date:</strong> ${report.date}</p>
 
-            <table>
-                <tr>
-                    <th>Category</th>
-                    <th>Male</th>
-                    <th>Female</th>
-                    <th>Total</th>
-                </tr>
-                ${rows}
-                <tr class="grand">
-                    <td colspan="3">Grand Total</td>
-                    <td>${grand}</td>
-                </tr>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Male</th>
+                        <th>Female</th>
+                        <th>Total</th>
+                    </tr>
+                    ${rows}
+                    <tr class="grand">
+                        <td colspan="3">Grand Total</td>
+                        <td>${grand}</td>
+                    </tr>
+                </table>
+            </div>
 
-            <button class="graph-btn" onclick="toggleGraph(${index})">
-                View Graph
-            </button>
+            <button class="graph-btn" onclick="toggleGraph(${index})">View Graph</button>
 
             <div class="chart-box" id="chartBox${index}">
                 <canvas id="chart${index}"></canvas>
@@ -350,6 +395,8 @@ function drawSingleGraph(index){
             }]
         },
         options:{
+            responsive:true,
+            maintainAspectRatio:false,
             plugins:{
                 legend:{display:false},
                 title:{
